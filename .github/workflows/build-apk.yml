@@ -21,11 +21,11 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Install Android API 35
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          sdkmanager --version
+          yes | sdkmanager "platforms;android-35" "build-tools;35.0.0" || true
 
       - name: Gradle 8.9
         uses: gradle/actions/setup-gradle@v4
@@ -34,27 +34,11 @@ jobs:
 
       - name: Restore Android source
         run: |
-          set -e
-          BASE="https://bjhslrvmwwzetcuyivbn.supabase.co/functions/v1/jarvis-build-bridge/source"
-          mkdir -p app/src/main/java/com/jhowmarcs/jarvisdrive
-          mkdir -p app/src/main/res/values
-          mkdir -p app/src/main/res/drawable
-          curl -fsSL "$BASE?name=MainActivity.java" -o app/src/main/java/com/jhowmarcs/jarvisdrive/MainActivity.java
-          curl -fsSL "$BASE?name=AndroidManifest.xml" -o app/src/main/AndroidManifest.xml
-          curl -fsSL "$BASE?name=styles.xml" -o app/src/main/res/values/styles.xml
-          curl -fsSL "$BASE?name=ic_launcher.xml" -o app/src/main/res/drawable/ic_launcher.xml
-          curl -fsSL "$BASE?name=app-build.gradle" -o app/build.gradle
+          Use `Control + Shift + m` to toggle the `tab` key moving focus. Alternatively, use `esc` then `tab` to move to the next interactive element on the page.
 
-      - name: Build debug APK
-        run: gradle :app:assembleDebug --stacktrace
+          Use `Control + Space`
+          to trigger autocomplete in most situations.
 
-      - name: Package APK
-        run: cp app/build/outputs/apk/debug/app-debug.apk JARVIS-Drive-v0.1.0.apk
+          Use `Tab` to navigate to the next placeholder.
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: JARVIS-Drive-v0.1.0
-          path: JARVIS-Drive-v0.1.0.apk
-          if-no-files-found: error
-          retention-days: 30
+          Attach files by dragging & dropping, selecting or pasting them.Styling with Markdown is supported
